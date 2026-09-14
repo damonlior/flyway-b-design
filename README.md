@@ -60,8 +60,17 @@ Design-System.md
 ## 目录结构
 
 ```text
-Flyway-B-Design/
+flyway-b-design/
 ├── README.md
-└── flyway-b-design/
+├── SKILL.md
+├── agents/
+│   └── openai.yaml
+└── references/
     ├── AGENTS.md
-    ├── Design
+    ├── AI-Design-Skill.md
+    ├── Design-Document-Output-Rules.md
+    ├── Design-System.md
+    └── Pattern-Library.md
+```
+
+`SKILL.md` 为 skill 入口；`references/` 下为四份治理文档与 Figma 交付规则。
