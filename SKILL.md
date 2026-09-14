@@ -7,17 +7,97 @@ description: Apply the Flyway B-end design system to design, revise, review, doc
 
 Apply the bundled Flyway B-end governance documents as one mandatory rule set. Do not invent a separate visual language or page structure.
 
-## Load the rules
+## REFERENCE LOADING POLICY (highest priority)
 
-Before analyzing, proposing, reviewing, or editing any page:
+Do not preload all reference files. `references/` totals roughly 124 KB; loading it on every task wastes context and quota for no benefit.
 
-1. Read [references/AGENTS.md](references/AGENTS.md) completely.
-2. Read [references/Design-System.md](references/Design-System.md) completely for visual foundations, components, variants, properties, assets, and known gaps.
-3. Read [references/AI-Design-Skill.md](references/AI-Design-Skill.md) completely for the design workflow, selection rules, interaction, risk, permissions, responsive behavior, and validation.
-4. Read [references/Pattern-Library.md](references/Pattern-Library.md) completely to select the page shell, primary pattern, supporting patterns, and cross-device transformations.
-5. Read [references/Design-Document-Output-Rules.md](references/Design-Document-Output-Rules.md) completely for Figma file structure, version management, module/task-flow organization, interaction annotations, review-ready state coverage, and delivery governance.
+Use progressive disclosure:
 
-When a reference is long, read it in successive chunks until EOF. Do not rely on memory, general B-end conventions, or only one reference.
+1. Determine the task.
+2. Use existing context first.
+3. Identify the minimum reference required.
+4. Search for the relevant section or keyword first.
+5. Read only the required section when possible.
+6. Load additional references only if the current information is insufficient.
+
+Never read every file in `references/` by default.
+
+Hard consequences of this policy:
+
+- If the current context already answers the question, read nothing.
+- Never read the same reference twice in one task; reuse what you already read.
+- Never read a reference "just to be safe"; read it when the task creates a real question.
+- Locating a section means `grep -n '^#' <file>` (or a keyword search) first, then reading only that range. Never read a whole file to find one fact.
+
+## Reference Router
+
+Match the task to exactly one row and load only what that row lists.
+
+### A. Simple UI edits — load nothing
+
+Examples: change spacing, change width/height, change copy, adjust alignment, swap a component the user already specified.
+
+Default: **load no reference.** Apply the edit directly.
+
+Only when a value is genuinely undetermined, search `Design-System.md` for that single fact instead of loading a file. Do not open a reference merely to confirm something the context already settles.
+
+### B. Component design / component usage
+
+Examples: Button, Input, Select, Table, Modal, Form, Navigation.
+
+1. `Design-System.md` first — §4 Component Library holds one section per component (Button, Input, Select, Date Picker, Dropdown, Checkbox / Radio, Switch, Table, Pagination, Modal, Drawer, Tooltip, Tag, Notification, Empty State). Read only the component in question; add §2 Foundations only when tokens are in question.
+2. Only if the task involves a composition pattern, also load `Pattern-Library.md` §17 (Cross-pattern Component Rules).
+
+Do not read either file in full.
+
+### C. Page design / page refactor
+
+Examples: Dashboard, List, Detail, Form, Workspace.
+
+1. `Pattern-Library.md` first — read §18 (Pattern Selection Matrix), which is short, to pick the pattern.
+2. Then read only the selected pattern's section (for example §5 Data List, §7 Detail).
+3. Then, only for the specific Token / Component facts that page needs, search `Design-System.md` for those facts.
+
+Do not load both files completely. Do not read patterns that were not selected.
+
+### D. AI generation principles / design decisions
+
+Load `AI-Design-Skill.md` only when the task involves:
+
+- how AI should generate a page
+- design decision principles
+- design quality judgement
+- AI behaviour boundaries
+
+### E. Skill workflow / execution constraints
+
+Load `AGENTS.md` only when the task involves:
+
+- how this skill itself works
+- file maintenance
+- the Figma execution flow
+- special agent constraints
+
+### F. Figma design-document output
+
+Load `Design-Document-Output-Rules.md` only when producing or revising a Figma design document. Start with §4 File Structure, §8 Task Flow Completeness, §9 Required State Coverage and §14 Review-ready Output Contract; add §5 Version Management, §10 Interaction Annotation or §18 Recommended Figma Skeleton only if the task touches them.
+
+### Reading a reference in full
+
+Escalate to a full read only when:
+
+- the task is high-risk (financial submission, permissions, risk control) and needs cross-section consistency, or
+- the user explicitly asks for a full-document compliance audit.
+
+## FIGMA CONTEXT POLICY
+
+Do not inspect the entire Figma document by default. A full document tree is large and rarely needed.
+
+- If the user identifies a specific frame, component, selection, or page, inspect only that scope (`get_selection`, `get_node`, or `get_design_context` with a specific `nodeId`).
+- Only expand the inspected scope when required to complete the task.
+- Do not call Figma tools when the task needs no current Figma state — for example a spacing or copy change on a node the user already described.
+- Do not re-inspect the same node twice in one task.
+- Do not call Figma at all unless the task requires reading the current design context or performing a Figma operation.
 
 ## Resolve authority
 
@@ -40,6 +120,8 @@ When a reference is long, read it in successive chunks until EOF. Do not rely on
 7. Check financial data formatting, risk confirmation, permission expression, error recovery, accessibility, Light/Dark, and Desktop/Compact/Mobile behavior.
 8. Complete the Definition of Done in `AGENTS.md` before calling the work compliant or complete.
 9. When producing or revising a Figma design document, organize it as Module → Scenario / Task Flow → Screen / State, add local interaction annotations, maintain version/history boundaries, and complete the Review Ready checklist in `Design-Document-Output-Rules.md`.
+
+Each step applies at the depth the task requires. A simple edit does not trigger the full page-design workflow; the router decides how much of it applies.
 
 ## Handle missing assets
 
@@ -75,4 +157,4 @@ Include, at minimum:
 12. Validation Result.
 13. Design-document version, module/task-flow structure, change summary, and Review Ready result when the deliverable is a Figma design proposal.
 
-For a short user request, compress the presentation but still perform every required check.
+For a short user request, compress the presentation and load fewer references — but still perform every check the task actually requires.

@@ -2,7 +2,7 @@
 
 > 本文件是飞来汇 B 端页面设计任务的最高层执行入口。
 >
-> 它不重复定义视觉 Token、组件规格或页面 Pattern，而是强制 AI 在每次设计任务中读取、组合并遵守以下三份文件：
+> 它不重复定义视觉 Token、组件规格或页面 Pattern，而是强制 AI 在每个设计任务中按任务范围读取、组合并遵守以下三份文件（加载范围与加载时机见 §3）：
 >
 > - `Design-System.md`：告诉 AI「长什么样」。
 > - `AI-Design-Skill.md`：告诉 AI「怎么设计」。
@@ -16,7 +16,7 @@
 
 ## 2. Governing Documents
 
-以下三份文件共同构成完整规范，任何一份都不能被省略或替代：
+以下三份文件共同构成完整规范。任一文件不得被整体忽略，但按 §3 与 `SKILL.md` 的 Reference Router 规则，应按任务范围分节读取：
 
 | 文件 | 负责回答 | 强制约束范围 |
 |---|---|---|
@@ -26,17 +26,31 @@
 
 本文件负责回答：AI 每次执行设计任务时，如何保证以上三份规范被完整应用。
 
-## 3. Mandatory Read Protocol
+## 3. Mandatory Read Protocol（按需分级读取）
+
+加载机制以 `SKILL.md` 的 Reference Router 为准，本协议与之一致、具有同等约束力。
+本协议要求“按任务范围完整读取相关章节”，不要求每次全量读取所有文件。
 
 每次开始页面设计、页面改版、交互补充、设计评审或 Figma 落图前，必须执行：
 
 1. 读取本文件，确认任务边界与强制流程。
-2. 读取 `Design-System.md`，确认可用 Token、组件、Variant、Property、尺寸和已知资产缺口。
-3. 读取 `AI-Design-Skill.md`，确认组件选择、布局、交互、状态、风险与交付规则。
-4. 读取 `Pattern-Library.md`，选择一个 Primary Pattern 和必要的 Supporting Patterns。
+2. 按 `SKILL.md` Reference Router 判定任务类型，只加载该类型要求的 reference。
+3. 先搜索定位章节（`grep -n '^#' <文件>` 或关键词检索），再读所需区间，不无条件读取整个文件。
+4. 同一任务中已读取的 reference 不重复读取。
 5. 在开始设计前完成组件、Token、Pattern、状态与响应式映射。
 
-禁止只依据历史记忆、通用 B 端经验、参考竞品或单独一份文件直接开始设计。
+禁止只依据历史记忆、通用 B 端经验或参考竞品直接开始设计。
+禁止在现有上下文已足够时读取 reference。
+禁止声称“符合 Design System”而实际未读取其对应章节 —— 合规范围以实际读取范围为准（见 §3.1）。
+
+### 3.1 合规范围声明（Compliance Scope）
+
+- 合规声明仅对**实际读取并应用**的章节有效。
+- 未读取的部分必须在交付中标注 `未校验 / 待确认`，不得默认为合规。
+- 以下高风险交付仍要求**完整读取**相关治理文件：
+  - 资金提交、支付、换汇、提现等不可逆金融操作
+  - 权限、风控、合规（KYC / KYB）判断
+  - 正式组件库、Variables、Styles 的改动
 
 若任一治理文件不存在、无法读取或内容明显失效：
 
@@ -302,9 +316,8 @@ Approved Exceptions:
 
 ### Governance
 
-- [ ] 已读取并遵守 `Design-System.md`。
-- [ ] 已读取并遵守 `AI-Design-Skill.md`。
-- [ ] 已读取并遵守 `Pattern-Library.md`。
+- [ ] 已按 §3 分级读取与本任务相关的章节并应用。
+- [ ] 未读取范围已在交付中标注 `未校验 / 待确认`。
 - [ ] 已记录冲突、需扩展项和获批例外。
 
 ### Structure
@@ -383,6 +396,7 @@ Design-System.md
 + AI-Design-Skill.md
 + Pattern-Library.md
 + 本执行协议
+（各文件按其相关章节分级读取，见 §3）
 = 合规的飞来汇 B 端页面设计
 ```
 
